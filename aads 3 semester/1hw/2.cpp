@@ -1,16 +1,25 @@
 #include <iostream>
 #include <vector>
 
+void fact(int n, std::vector<int> vec) {
+  for (int i = 1; i * i <= n/2 + 1; i++) {
+    int c = vec[i];
+    while (n % c == 0) {
+      std::cout << c << ' ';
+      n /= c;
+    }
+  }
+  if (n != 1) {
+    std::cout << n << ' ';
+  }
+}
+
 std::vector<int> alg(int x) {
   std::vector<int> vec(x + 1, true);
   std::vector<int> good;
   good.push_back(0);
-  int count = 0;
-  //vec[0] = false;
-  //vec[1] = false;
   for (int i = 2; i <= x; i++) {
     if (vec[i]) {
-      count += 1;
       good.push_back(i);
       for (int j = 2 * i; j <= x; j += i) {
         vec[j] = false;
@@ -21,12 +30,8 @@ std::vector<int> alg(int x) {
 }
 
 int main() {
-  std::vector<int> vec = alg(1299709);
   int n = 0;
   std::cin >> n;
-  int a = 0;
-  for (int i = 0; i < n; i++) {
-    std::cin >> a;
-    std::cout << vec[a] << ' ';
-  }
+  std::vector<int> vec = alg(1200000);
+  fact(n, vec);
 }
