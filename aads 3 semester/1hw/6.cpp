@@ -22,19 +22,19 @@ int main() {
   int a = 0;
   int b = 0;
   std::cin >> a >> b;
-  std::vector<int> vec = alg(2000000);
+  std::vector<int> vec = alg(2000100);
   std::set<int> kmp;
   for (int i = a; i <= b; i++) {
-    int j = 1;
     int k = i;
+    int j = 1;
     while (vec[j] <= k && j < vec.size()) {
-      if (j % vec[j] == 0) {
+      if (k % vec[j] == 0) {
         kmp.insert(vec[j]);
         while (k % vec[j] == 0) {
           k /= vec[j];
         }
       }
-      if (k != 1 && vec[j] * vec[j] > k) {
+      if (k != 1 && vec[j]*vec[j]>k) {
         kmp.insert(k);
         k = 1;
         break;
