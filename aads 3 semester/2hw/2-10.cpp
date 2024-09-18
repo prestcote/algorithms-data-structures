@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 const int64_t mod = 10000;
 
 int64_t mul(int64_t a, int64_t b) {
@@ -25,9 +26,22 @@ long long func(int a, long long n) {
   return k;
 }
 
+std::vector <long long> func2(int a, long long n) {
+  std::vector<long long> vec(n+1, 1);
+  vec[1] = a;
+  int k = 0;
+  for (int i = 2; i <= n; i++) {
+    k = vec[i - 1];
+    vec[i] = mul(k, k);
+  }
+  return vec;
+}
+
 int main() {
-  int n = 0;
+  long long n = 0;
   int a = 0;
   std::cin >> a >> n;
-  std::cout << func(a, n);
+  //std::cout << func(a, n);
+  std::vector<long long> vec = func2(a, n);
+  std::cout << vec[n];
 }
