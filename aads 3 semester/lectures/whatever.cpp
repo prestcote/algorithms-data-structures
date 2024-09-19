@@ -43,14 +43,21 @@ int main() {
 
   int64_t find = get_hash(s);
   //std::cout << find << '\n';
+  int count = 0;
+  std::vector<int> pos;
 
   int64_t length = s.size();
   for (int64_t i = 1; i < t.size() - length + 1; i++) {
     int64_t h = get_hash(i, i + length - 1);
     //std::cout << h << ' ';
     if (h == find) {
-      std::cout << i-1 << ' ';
+      count += 1;
+      pos.push_back(i);
     }
+  }
+  std::cout << count << '\n';
+  for (int i = 0; i < pos.size(); i++) {
+    std::cout << pos[i] << ' ';
   }
 
 }
