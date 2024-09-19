@@ -1,5 +1,7 @@
 #include <iostream>
 
+//произведение остатков должно делиться по модулю с таким же остатком что и 
+//сами числа
 const long long mod = 1.e9 + 9;
 
 long long find(int a) {
