@@ -1,0 +1,5 @@
+add_executable(4-3 4-3.cpp)
+add_executable(4-4 4-4.cpp)
+add_executable(4-5 4-5.cpp)
+add_executable(4-10 4-10.cpp)
+add_executable(4-1 4-1.cpp)
