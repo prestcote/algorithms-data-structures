@@ -8,9 +8,9 @@ void rec(int n, int b, std::vector<int> vec) {
     }
     std::cout << std::endl;
   }
-  if (n < 0) {
-    return;
-  }
+  //if (n < 0) {
+  //  return;
+  //}
   for (int i = 1; i <= b; i++) {
     vec.push_back(i);
     rec(n - i, i, vec);

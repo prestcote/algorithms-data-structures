@@ -4,8 +4,8 @@
 int mins = 100000000;
 
 void rec(int stone, int one, int two, std::vector<int>vec) {
-  if (stone == vec.size() - 1) {
-    if (mins > std::abs(one - two)) {
+  if (stone == vec.size()) {
+    if (mins >= std::abs(one - two)) {
       mins = std::abs(one - two);
     }
   }
@@ -24,6 +24,7 @@ int main() {
     std::cin >> a;
     stones.push_back(a);
   }
+  //std::cout << stones.size();
   rec(0, 0, 0, stones);
   std::cout << mins;
 }
