@@ -3,8 +3,7 @@
 #include<vector>
 
 std::vector<int> mask;
-//std::string ans;
-std::vector<int> ans;
+std::string ans;
 
 void rec(std::vector<int> r, int s, int l) {
   int count = 0;
@@ -42,9 +41,61 @@ int rec1(std::vector<int> r, int s, int l) {
   rec1(r, s, l);
 }
 
+void rec2(const std::string& str, int s, int l) {
+  if (ans.size() == s) {
+    for (int i = 0; i < s; i++) {
+      //std::cout << ans << '\n';
+      std::cout << ans[i] << ' ';
+      //std::cout << std::endl;
+    }
+    std::cout << std::endl;
+  }
+  else {
+    for (size_t i = 0; i < mask.size(); ++i) {
+      if (mask[i] < s) {
+        mask[i] += 1;
+        ans.push_back(str[i]);
+        rec2(str, s, l);
+        mask[i] -= 1;
+        ans.pop_back();
+      }
+    }
+  }
+}
+
+std::vector<int> r;
+
+void rec2(int s, int l, int a, int b) {
+  std::cout << "START!! ";
+  if (r.size() == s) {
+    for (int i = 0; i < s; i++) {
+      std::cout << r[i] << ' ';
+      std::cout << "YOHOHO" << ' ';
+      std::cout << std::endl;
+    }
+  }
+  else {
+    for (size_t i = 0; i < mask.size(); i++) {
+      if (mask[i] < std::pow(l, s)) {
+        //std::cout << "YOHOHO" << ' ';
+        mask[i] += 1;
+        r.push_back(i+1);
+        rec2(s, l, a, b);
+        mask[i] -= 1;
+        r.pop_back();
+      }
+    }
+  }
+}
+
 int main() {
   int s, l;
   std::cin >> s >> l;
-  std::vector<int> r(s, 1);
-  rec1(r, s, l);
+  std::string str;
+  for (int i = 1; i <= l; i++) {
+    str += std::to_string(i);
+  }
+  mask.resize(l);
+  //std::vector<int> r;
+  rec2(str,s, l);
 }
