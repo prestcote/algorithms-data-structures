@@ -3,46 +3,50 @@
 #include <string>
 #include <map>
 
-std::vector<int64_t> base(16);
-int64_t p = 1000000007;
-int64_t x = 263;
+std::vector<long long> base(16);
+long long p = 1000000007;
+long long x = 263;
 
 
-int64_t get_hash(std::string str, int m) {
-  int h = 0;
+long long get_hash(std::string str, long long m) {
+  long long h = 0;
+  long long t = 0;
   for (int64_t i = 0; i < str.size(); i++) {
-    h += ((str[i] % p) * base[i]) % m;
+    t = ((str[i] % p) * (base[i] % p)) % p;
+    h = (h + t) % p;
   }
-  return h;
+  return h % m;
 }
 
 int main() {
   base[0]  = 1;
-  int x = 263;
+  long long x = 263;
   for (int i = 1; i < 16; i++) {
     base[i] = (base[i - 1] * 263) % p;
   }
 
-  int m = 0;
+  long long m = 0;
   std::cin >> m;
-  int n = 0;
+  long long n = 0;
   std::cin >> n;
-  std::cout << get_hash("HellO", m);
+  //std::cout << get_hash("HellO", m);
   std::vector<std::vector<std::string>> table(m+1);
   std::string comm;
   std::string word;
-  int check = 0;
-  int hash = 0;
+  long long check = 0;
+  long long hash = 0;
   for (int i = 0; i < n; i++) {
     std::cin >> comm;
     if (comm == "add") {
       std::cin >> word;
       hash = get_hash(word, m);
-      table[hash].push_back(word);
+      if (std::find(table[hash].begin(), table[hash].end(), word) == table[hash].end()) {
+        table[hash].push_back(word);
+      }
     }
     else if (comm == "del") {
       std::cin >> word;
-      int c = get_hash(word, m);
+      long long c = get_hash(word, m);
       if (!table[c].empty()) {
         for (int i = 0; i < table[c].size(); i++) {
           if (table[c][i] == word) {
@@ -53,7 +57,7 @@ int main() {
     }
     else if (comm == "find") {
       std::cin >> word;
-      int h = get_hash(word, m);
+      long long h = get_hash(word, m);
       bool f = false;
       if (!table[h].empty()) {
         for (int i = 0; i < table[h].size(); i++) {
