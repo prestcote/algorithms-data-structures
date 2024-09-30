@@ -2,36 +2,42 @@
 #include <vector>
 #include <locale.h>
 
+void printMatrix(std::vector<std::vector<double>> vec) {
+  for (int i = 0; i < 8; i++) {
+    for (int j = 0; j < 9; j++) {
+      std::cout << vec[i][j] << ' ';
+    }
+    std::cout << std::endl;
+  }
+}
 
 void sol(int n, std::vector<std::vector<double>> matrix, std::vector<double> ans) {
-  int64_t count_f_div = 0;
+  int64_t count_f_div = 0; //счетчики
   int64_t count_f_mul = 0;
   int64_t count_f_add = 0;
-  for (int64_t i = 0; i < n - 1; i++) {         //loop to perform the gauss elimination
-    for (int64_t k = i + 1; k < n; k++)
-    {
-      double t = matrix[k][i] / matrix[i][i];
+  for (int64_t i = 0; i < n - 1; i++) { //начинаем прямой ход: цикл для перебора каждой "ведущую" строку 
+    for (int64_t k = i + 1; k < n; k++) { //цикл для перебора каждой строки после ведущей
+      double t = matrix[k][i] / matrix[i][i]; //находим соотношение, чтобы потом обнулить элемент
       count_f_div += 1;
-      for (int64_t j = 0; j <= n; j++) {
-        matrix[k][j] = matrix[k][j] - t * matrix[i][j];    //make the elements below the pivot elements equal to zero or elimnate the variables
+      for (int64_t j = 0; j <= n; j++) { //цикл для перебора каждого элемента строки
+        matrix[k][j] = matrix[k][j] - t * matrix[i][j]; //вычитаем из каждого элемента соотв. элемент "ведущей строки", умноженный на соотношение
         count_f_add += 1;
         count_f_mul += 1;
       }
-
     }
   }
+
   int64_t count_b_div = 0;
   int64_t count_b_mul = 0;
   int64_t count_b_add = 0;
-  for (int64_t i = n - 1; i >= 0; i--) {             //back-substitution                      //x is an array whose values correspond to the values of x,y,z..
-    ans[i] = matrix[i][n];                //make the variable to be calculated equal to the rhs of the last equation
-    for (int64_t j = i + 1; j < n; j++)
-      if (j != i) {         //then subtract all the lhs values except the coefficient of the variable whose value                                   is being calculated
-        ans[i] = ans[i] - matrix[i][j] * ans[j];
-        count_b_add += 1;
-        count_b_mul += 1;
-      }
-    ans[i] = ans[i] / matrix[i][i];            //now finally divide the rhs by the coefficient of the variable to be calculated
+  for (int64_t i = n - 1; i >= 0; i--) { //начинаем обратный ход, идем с последних строк матрицы
+    ans[i] = matrix[i][n]; //каждый текущий ответ зависит от предыдущего
+    for (int64_t j = i + 1; j < n; j++) {
+      ans[i] = ans[i] - matrix[i][j] * ans[j]; //вычитаем из ответа коэффициенты, если нашли соответствущий икс
+      count_b_add += 1;
+      count_b_mul += 1;
+    }
+    ans[i] = ans[i] / matrix[i][i]; //находим икс
     count_b_div += 1;
   }
 
@@ -51,33 +57,29 @@ void sol(int n, std::vector<std::vector<double>> matrix, std::vector<double> ans
 }
 
 void sol_but_better(int n, std::vector<std::vector<double>> matrix, std::vector<double> ans) {
-  int64_t count_f_div = 0;
+  int64_t count_f_div = 0; //счетчики
   int64_t count_f_mul = 0;
   int64_t count_f_add = 0;
 
-  for (int i = 0; i < n; i++) {                   //Pivotisation
-    for (int64_t k = i + 1; k < n; k++) {
-      if (std::abs(matrix[i][i]) < std::abs(matrix[k][i])) {
-        for (int j = 0; j <= n; j++)
+  for (int64_t i = 0; i < n - 1; i++) { //начинаем прямой ход: цикл для перебора каждой "ведущую" строку 
+    for (int64_t row = i + 1; row < n; row++) { //выбор ведущего элемента
+      if (std::abs(matrix[i][i]) < std::abs(matrix[row][i])) { //в каждом столбце находим наименьший элемент
+        for (int j = 0; j <= n; j++) 
         {
           double temp = matrix[i][j];
-          matrix[i][j] = matrix[k][j];
-          matrix[k][j] = temp;
+          matrix[i][j] = matrix[row][j];
+          matrix[row][j] = temp;
         }
       }
     }
-  }
-
-  for (int64_t i = 0; i < n - 1; i++) {         //loop to perform the gauss elimination
-    for (int64_t k = i + 1; k < n; k++)
-    {
-      double t = matrix[k][i] / matrix[i][i];
+    for (int64_t k = i + 1; k < n; k++) { //цикл для перебора каждой строки после ведущей
+      double t = matrix[k][i] / matrix[i][i]; //находим соотношение, чтобы потом обнулить элемент
       count_f_div += 1;
-      for (int64_t j = 0; j <= n; j++) {
-        matrix[k][j] = matrix[k][j] - t * matrix[i][j];
+      for (int64_t j = 0; j <= n; j++) { //цикл для перебора каждого элемента строки
+        matrix[k][j] = matrix[k][j] - t * matrix[i][j]; //вычитаем из каждого элемента соотв. элемент "ведущей строки", умноженный на соотношение
         count_f_add += 1;
         count_f_mul += 1;
-      }//make the elements below the pivot elements equal to zero or elimnate the variables
+      }
     }
   }
 
@@ -85,16 +87,16 @@ void sol_but_better(int n, std::vector<std::vector<double>> matrix, std::vector<
   int64_t count_b_mul = 0;
   int64_t count_b_add = 0;
 
-  for (int64_t i = n - 1; i >= 0; i--) {             //back-substitution                      //x is an array whose values correspond to the values of x,y,z..
-    ans[i] = matrix[i][n];                //make the variable to be calculated equal to the rhs of the last equation
+  for (int64_t i = n - 1; i >= 0; i--) { //начинаем обратный ход, идем с последних строк матрицы
+    ans[i] = matrix[i][n]; //каждый текущий ответ зависит от предыдущего
     for (int64_t j = i + 1; j < n; j++) {
-      if (j != i) {        //then subtract all the lhs values except the coefficient of the variable whose value                                   is being calculated
+      if (j != i) { //вычитаем из ответа коэффициенты, если нашли соответствущий икс
         ans[i] = ans[i] - matrix[i][j] * ans[j];
         count_b_add += 1;
         count_b_mul += 1;
       }
     }
-    ans[i] = ans[i] / matrix[i][i];            //now finally divide the rhs by the coefficient of the variable to be calculated
+    ans[i] = ans[i] / matrix[i][i]; //находим икс
     count_b_div += 1;
   }
 
@@ -130,7 +132,7 @@ int main() {
   matrix[6] = { -169, 97, - 71, 93, 91, - 64, - 107, 10, -414 };
   matrix[7] = { 62, 198, - 71, 172, 116, 199, 173, 194, 5470 };
 
-  std::cout << "система линейных уравнений в матричном виде: \n";
+  std::cout << "Система линейных уравнений в матричном виде: \n";
   std::cout.width(10);
   for (int i = 0; i < 8; i++) {
     for (int j = 0; j < 9; j++) {
