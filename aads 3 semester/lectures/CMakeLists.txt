@@ -1,3 +1,7 @@
 add_executable(whatever whatever.cpp)
 add_executable(2l 2l.cpp)
 add_executable(well well.cpp)
+add_executable(binsearch1 binsearch1.cpp)
+add_executable(binsearch2 binsearch2.cpp)
+add_executable(binsearch_vector binsearch_vector.cpp)
+add_executable(cows cows.cpp)
