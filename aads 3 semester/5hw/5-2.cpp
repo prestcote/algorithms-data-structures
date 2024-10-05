@@ -1,7 +1,9 @@
 #include <iostream>
 
+int a, b, c, d;
+
 double f(double x) {
-  return x * x - 5;
+  return a*x*x*x + b*x*x + c*x + d;
 }
 
 bool equal(double a, double b) {
@@ -11,6 +13,14 @@ bool equal(double a, double b) {
 int main() {
   double left = 0;
   double right = 1e9;
+  std::cin >> a >> b >> c >> d;
+  if (a < 0) {
+    a = -a;
+    b = -b;
+    c = -c;
+    d = -d;
+  }
+  std::cout << a;
   for (int i = 0; i < 50; i++) {
     double mid = (left + right) / 2;
     if (equal(left, right) || equal(f(mid), 0)) {

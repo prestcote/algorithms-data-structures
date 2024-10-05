@@ -27,7 +27,8 @@ int pref_func(std::string s) {
   return s.size() - maxx;
 }
 
-int64_t prefix_function(std::string s) {
+int prefix_function(std::string s) {
+  int max = 0;
   int n = (int)s.length();
   std::vector<int> pi(n);
   for (int i = 1; i < n; ++i) {
@@ -36,22 +37,25 @@ int64_t prefix_function(std::string s) {
       j = pi[j - 1];
     if (s[i] == s[j])  ++j;
     pi[i] = j;
+    if (j > max) {
+      max = j;
+    }
   }
-  return s.size() - *std::max_element(pi.begin(), pi.end());
+  return max;
 }
 
 int main() {
   //int pref = pref_func("abcabcd");
   //std::cout << pref;
   std::string s;
-  std::set<char> sett;
+  std::set<std::string> sett;
   std::cin >> s;
   int ans = 0;
-  for (int i = 0; i < s.size(); i++) {
+  for (int i = 1; i <= s.size(); i++) {
     std::string str = s.substr(0, i);
-    //sett.insert(s[i]);
-    //std::cout << str << ' ';
-    ans += pref_func(str);
+    sett.insert(str);
+    std::cout << str << ' ';
+    ans += (str.size() + 1 - prefix_function(str));
   }
-  std::cout << ans;
+  std::cout << ans << ' ' << sett.size();
 }

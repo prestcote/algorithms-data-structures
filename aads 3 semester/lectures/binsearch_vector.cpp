@@ -1,7 +1,7 @@
 #include <iostream>
 #include <vector>
 
-template<class T>
+template <class T>
 int bin_first(const std::vector<T>& a, const T& key) {
   int left = -1;
   int right = a.size();
@@ -36,7 +36,7 @@ int bin_last(const std::vector<T>&, const T& key) {
     }
   }
   if (left != -1 && a[left] == key) {
-    return right;
+    return left;
   }
   else {
     return -left;

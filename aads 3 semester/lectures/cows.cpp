@@ -12,6 +12,7 @@ int main() {
 
   int left = 0;
   int right = v.back();
+  int ans = 0;
   while (left + 1 < right) {
     int mid = (left + right) / 2;
     int cnt = 1;
@@ -29,7 +30,9 @@ int main() {
     else {
       right = mid;
     }
+    ans = mid;
   }
-  std::cout << left << ' ' << right;
+  //std::cout << left << ' ' << right;
+  std::cout << ans;
 
 }
