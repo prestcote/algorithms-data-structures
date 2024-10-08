@@ -1,4 +1,7 @@
+#include <cstdlib>
 #include <iostream>
+//#include <cmath>
+#include <iomanip>
 
 int a, b, c, d;
 
@@ -6,24 +9,23 @@ double f(double x) {
   return a*x*x*x + b*x*x + c*x + d;
 }
 
-bool equal(double a, double b) {
-  return std::abs(a - b) < 1e-9;
+bool isEqual(double a, double b) {
+  return std::abs(a - b) < 1e-12;
 }
 
 int main() {
-  double left = 0;
-  double right = 1e9;
   std::cin >> a >> b >> c >> d;
+  double left = -1e9;
+  double right = 1e9;
   if (a < 0) {
     a = -a;
     b = -b;
     c = -c;
     d = -d;
   }
-  std::cout << a;
-  for (int i = 0; i < 50; i++) {
+  for (int i = 1; i < 150; ++i) {
     double mid = (left + right) / 2;
-    if (equal(left, right) || equal(f(mid), 0)) {
+    if (isEqual(left, right) || isEqual(f(mid), 0)) {
       break;
     }
     if (f(left) * f(mid) > 0) {
@@ -33,5 +35,5 @@ int main() {
       right = mid;
     }
   }
-  std::cout << (left + right) / 2;
+  std::cout << std::setprecision(6) << (left + right) / 2;
 }

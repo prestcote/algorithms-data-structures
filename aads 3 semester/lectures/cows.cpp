@@ -10,7 +10,7 @@ int main() {
     std::cin >> x;
   }
 
-  int left = 0;
+  int left = -1;
   int right = v.back();
   int ans = 0;
   while (left + 1 < right) {
@@ -30,9 +30,8 @@ int main() {
     else {
       right = mid;
     }
-    ans = mid;
   }
   //std::cout << left << ' ' << right;
-  std::cout << ans;
+  std::cout << left;
 
 }

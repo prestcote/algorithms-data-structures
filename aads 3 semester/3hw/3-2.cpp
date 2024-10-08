@@ -6,7 +6,7 @@
 std::vector<long long> base(16);
 long long p = 1000000007;
 long long x = 263;
-
+long long m = 100000;
 
 long long get_hash(std::string str, long long m) {
   long long h = 0;

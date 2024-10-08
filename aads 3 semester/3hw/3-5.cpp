@@ -39,45 +39,45 @@ int main() {
   std::cin >> l;
   int pos = 0;
   std::cin >> pos;
-  int max = 0;
-  int h = get_hash(1, list[pos-1].size() - 1, list[pos-1]);
+  int max = 1;
+  //int h = get_hash(1, list[pos-1].size() - 1, list[pos-1]);
+  int size_ = list[pos - 1].size();
+  int h = list[pos - 1][size_ - 1];;
   int temp = 1;
-  int size_ = list[pos-1].size();
-  int start = 0;
-  int end = 0;
   int start_ans = 0; 
   int end_ans = 0;
+  int end = 0;
   for (int i = 1; i < l; i++) {
     std::cin >> pos;
     //std::cout << list[pos - 1].size() << ' ' << size_;
     if (list[pos-1].size() > size_) {
 
-      int temp_hash = get_hash(1, size_-1, list[pos-1]);
-      
+      //int temp_hash = get_hash(1, size_-1, list[pos-1]);
+      int temp_hash = list[pos - 1][size_ - 1];
       if (h == temp_hash) {
         temp += 1;
         if (max < temp) {
           max = temp;
-          end_ans = end;
-          start_ans = start;
+          end_ans = i;
+          start_ans = i - temp + 1;
         }
       }
       else {
         temp = 1;
-        start = i;
       }
-      h = temp_hash;
+      //h = list[pos - 1].back();
+      int end = list[pos - 1].size() - 1;
+      h = list[pos - 1][end];
       
     }
     else {
       temp = 1;
-      h = get_hash(1, list[pos-1].size() - 1, list[pos-1]);
-      start = i;
+      //h = list[pos - 1].back();
+      int end = list[pos - 1].size() - 1;
+      h = list[pos - 1][end];
     }
-    end = i;
-    
     size_ = list[pos-1].size();
     
   }
-  std::cout << max << ' ' << start+1 << ' ' << end+1;
+  std::cout << max << ' ' << start_ans+1 << ' ' << end_ans+1;
 }
