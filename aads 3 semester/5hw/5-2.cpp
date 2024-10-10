@@ -1,16 +1,24 @@
-#include <cstdlib>
+//#include <cstdlib>
 #include <iostream>
-//#include <cmath>
+#include <cmath>
 #include <iomanip>
 
 int a, b, c, d;
 
 double f(double x) {
   return a*x*x*x + b*x*x + c*x + d;
+  //return x * x - 5;
 }
 
 bool isEqual(double a, double b) {
-  return std::abs(a - b) < 1e-12;
+  if (a > b) {
+    return (a - b) < 1e-9;
+  }
+  else {
+    return (b - a) < 1e-12;
+  }
+  
+  //return std::abs(a - b) < 1e-12;
 }
 
 int main() {

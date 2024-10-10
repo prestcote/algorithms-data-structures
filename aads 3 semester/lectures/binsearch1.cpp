@@ -1,24 +1,21 @@
+#include <cstdint>
 #include <iostream>
-#include <iomanip>
 #include <cmath>
-//#include <cstdlib>
 
 double f(double x) {
-  return x * x * x - 3 * x * x + 3 * x - 1;
+  return x * x - 5;
 }
 
-bool equal(double a, double b) {
-  return std::abs(a - b) < 0.0000000001;
+bool isEqual(double a, double b) {
+  return std::abs(a - b) < 1e-9;
 }
 
 int main() {
-  double left = -1e9;
+  double left = 0;
   double right = 1e9;
-  for (int i = 0; i < 100; i++) {
+  for (int i = 1; i < 50; ++i) {
     double mid = (left + right) / 2;
-    if (equal(left, right) || equal(f(mid), 0)) {
-      break;
-    }
+    if (isEqual(left, right) || isEqual(f(mid), 0)) break;
     if (f(left) * f(mid) > 0) {
       left = mid;
     }
@@ -26,5 +23,5 @@ int main() {
       right = mid;
     }
   }
-  std::cout << std::setprecision(9) << (left + right) / 2;
+  std::cout << (left + right) / 2;
 }
