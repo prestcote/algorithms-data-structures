@@ -5,13 +5,13 @@ int main() {
   long long w = 0;
   long long h = 0;
   long long n = 0;
-  long long left = 1;
+  long long left = 0;
   std::cin >> w >> h >> n;
   long long right = 1000000000;
   while (left + 1 < right) {
     long long mid = (left + right) / 2;
     if (((mid / w) * (mid / h)) < n) {
-      left = mid;
+      left = mid + 1;
     }
     else {
       right = mid;

@@ -1,7 +1,6 @@
 //#include <cstdlib>
 #include <iostream>
 #include <cmath>
-#include <iomanip>
 
 int a, b, c, d;
 double epsilon = 1e-8;
@@ -25,7 +24,6 @@ int main() {
   while (left+epsilon < right) {
     mid = (left + right) / 2;
     if (f(left) * f(mid) > 0) {
-    //if (f(mid)<0) {
       left = mid;
     }
     else {
