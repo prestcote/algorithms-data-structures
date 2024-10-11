@@ -27,7 +27,8 @@ int main() {
   std::vector<double> p(8);
   std::vector<double> q(8);
   
-  // прямой ход
+  //прямой ход
+
   p[0] = (-matrix[0][1]) / matrix[0][0];  
   q[0] = matrix[0][8] / matrix[0][0];
   //а=0 => на 4 операции (2 сложения и 2 умножения) меньше
