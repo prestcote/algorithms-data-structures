@@ -15,11 +15,11 @@ int binFirst(const std::vector<int>& vec, const int& key) {
     }
   }
   if (right != vec.size() && vec[right] == key) {
-    //std::cout << std::endl << right << std::endl;
+    std::cout << std::endl << right << std::endl;
     return right;
   }
   else {
-    //std::cout << std::endl << - right << std::endl;
+    std::cout << std::endl << - right << std::endl;
     return - right;
   }
 }
@@ -37,13 +37,13 @@ int binLast(const std::vector<int>& vec, const int& key) {
     }
   }
   if (left != -1 && vec[left] == key) {
-    //std::cout << std::endl << left << std::endl;
+    std::cout << std::endl << left << std::endl;
     return left;
     
   }
   else {
     //return -left;
-    //std::cout << std::endl << -left-1 << std::endl;
+    std::cout << std::endl << -left-1 << std::endl;
     return -left-1; 
   }
 }
@@ -74,7 +74,7 @@ int main() {
     std::cin >> l >> r;
     int max_ = binLast(vec, r);
     int min_ = binFirst(vec, l);
-    if (max_ < 0 && min_ < 0) {
+    if (max_ <= 0 && min_ <= 0) {
       min_ = -min_;
       max_ = - max_;
       ans.push_back(max_ - min_);
