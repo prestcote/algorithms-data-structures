@@ -1,21 +1,27 @@
 #include <iostream>
 #include <vector>
-#include <locale.h>
-
+#include <clocale>
+#include <iomanip>
 
 int main() {
-  setlocale(LC_ALL, "Russian");
+  //setlocale(LC_ALL, "Russian");
 
-  std::vector<std::vector<double>> matrix(8, std::vector<double>(9));
+  int n = 8;
+
+  std::vector<std::vector<double>> matrix(n, std::vector<double>(n));
+  std::vector<double> b = { -3075, 1919, -1656, -2439, 4, 396, -414, 5470 };
+
+  std::vector<double> y(n);
+  std::vector<double> x(n);
   
-  matrix[0] = { 28, -1,	0, 0, 0, 0,	0,	0, 26 };
-  matrix[1] = { -24,	66,	24,	0,	0,	0,	0,	0, 180 };
-  matrix[2] = { 0,	20, -15,	38, 0,	0,	0,	0, 147 };
-  matrix[3] = { 0,	0, -71,	73, -17,	0,	0,	0, -6 };
-  matrix[4] = { 0,	0,	0,	3,	65, -44,	0,	0, 73 };
-  matrix[5] = { 0,	0,	0,	0,	2, -16, -3,	0, -107 };
-  matrix[6] = { 0,	0,	0,	0,	0,	93,	100, -43, 914 };
-  matrix[7] = { 0,	0, 0,	0,	0,	0,	60, -100, -380 };
+  matrix[0] = { 124, -82, -92, 3, 106, -191, -93, -188 };
+  matrix[1] = { -39, -17, 78, -53, -178, 136, 140, 133 };
+  matrix[2] = { 37, 37, -175, 29, -113, -38, -155, 65 };
+  matrix[3] = { -24, -27, -117, 50, -52, -148, -154, 2 };
+  matrix[4] = { 191, 62, 137, 20, 89, -34, -37, -98, 4 };
+  matrix[5] = { 188, -159, 64, -187, -73, 108, -15, 113 };
+  matrix[6] = { -169, 97, -71, 93, 91, -64, -107, 10 };
+  matrix[7] = { 62, 198, -71, 172, 116, 199, 173, 194 };
 
   int count_f_add = 0; // счетчики
   int count_f_mul = 0;
@@ -23,45 +29,70 @@ int main() {
   int count_b_add = 0;
   int count_b_mul = 0;
   int count_b_div = 0;
+  int count_lu_add = 0;
+  int count_lu_mul = 0;
+  int count_lu_div = 0;
 
-  std::vector<double> p(8);
-  std::vector<double> q(8);
+  int count = 0;
+
+  for (size_t k = 0; k < n; ++k) { // lu-разложение
+
+    for (size_t i = k; i < n; ++i) {
+      for (size_t p = 0; p < k; ++p) {
+        matrix[i][k] -= matrix[i][p] * matrix[p][k];
+        count_lu_mul += 1;
+        count_lu_add += 1;
+      }
+    }
+
+    for (size_t j = k + 1; j < n; ++j) {
+      matrix[k][j] = matrix[k][j];
+      for (size_t p = 0; p < k; ++p) {
+        matrix[k][j] -= matrix[p][j] * matrix[k][p];
+        count_lu_mul += 1;
+        count_lu_add += 1;
+      }
+      matrix[k][j] /= matrix[k][k];
+      count_lu_div += 1;
+    }
+  }
+
+  for (size_t i = 0; i < n; ++i) { // пр€мой ход
+    y[i] = b[i];
+    for (size_t j = 0; j < i; ++j) {
+      y[i] -= matrix[i][j] * y[j];
+      count_f_add += 1;
+      count_f_mul += 1;
+    }
+    y[i] /= matrix[i][i];
+    count_f_div += 1;
+  } 
+
   
-  //пр€мой ход
-
-  p[0] = (-matrix[0][1]) / matrix[0][0];  
-  q[0] = matrix[0][8] / matrix[0][0];
-  //а=0 => на 4 операции (2 сложени€ и 2 умножени€) меньше
-  count_f_div += 2;
-  for (int i = 1; i < 7; i++) {
-    double division = (matrix[i][i] + matrix[i][i - 1] * p[i - 1]);
-    p[i] = (-matrix[i][i + 1]) / division;
-    q[i] = (-(matrix[i][i - 1] * q[i-1]) + matrix[i][8]) / division;
-    count_f_mul += 2;
-    count_f_add += 2;
-    count_f_div += 2;
+  for (int i = n-1; i >= 0; --i) { // обратный ход
+    x[i] = y[i];
+    for (size_t j = n-1; j > i; j--) {
+      if (i == j) {
+        x[i] -= x[j];
+        count_b_add += 1;
+      }
+      else {
+        x[i] -= matrix[i][j] * x[j];
+        count_b_add += 1;
+        count_b_mul += 1;
+      }
+    }
   }
-  p[7] = 0; //c = 0 => на 1 операцию делени€ меньше
-  q[7] = (-(matrix[7][6] * q[6]) + matrix[7][8]) / (matrix[7][7] + matrix[7][6] * p[6]);
-  count_f_add += 2;
-  count_f_mul += 2;
-  count_f_div += 1;
-
-  // обратный ход
-  std::vector<double> x(8);
-  // Xn+1 = 0 => Xn = q => на две операции (сложение и умножение меньше)
-  x[7] = q[7]; // минус две операции
-  for (int i = 6; i >= 0; i--) {
-    x[i] = p[i] * x[i + 1] + q[i];
-    count_b_mul += 1;
-    count_b_add += 1;
-  }
+  count = count_lu_mul + count_lu_add + count_lu_div + count_f_mul + count_f_add + count_f_div + count_b_mul + count_b_add + count_b_div;
+  
   std::cout << "–ешение: { ";
   for (int i = 0; i < 8; i++) {
-    std::cout << x[i] << ' ';
+    std::cout << std::setprecision(5) << x[i] << ' ';
   }
   std::cout << "}" << std::endl;
+  std::cout << "LU-разложение: " << count_lu_add << " сложений " << count_lu_mul << " умножений " << count_lu_div << " делений ¬сего: " << count_lu_mul + count_lu_div + count_lu_add << std::endl;
   std::cout << "ѕр€мой ход: " << count_f_add << " сложений " << count_f_mul << " умножений " << count_f_div << " делений ¬сего: " << count_f_mul + count_f_div + count_f_add << std::endl;
-  std::cout << "ќбратный ход: " << count_b_add << " сложений " << count_b_mul << " умножений " << count_b_div << " делений ¬сего: " << count_b_mul + count_b_div + count_b_add;
+  std::cout << "ќбратный ход: " << count_b_add << " сложений " << count_b_mul << " умножений " << count_b_div << " делений ¬сего: " << count_b_mul + count_b_div + count_b_add << std::endl;
+  std::cout << "¬сего: " << count_lu_add + count_f_add + count_b_add << " сложений " << count_lu_mul + count_f_mul + count_b_mul << " умножений " << count_lu_div + count_f_div + count_b_div << " делений ¬сего: "<<count;
   return 0;
 }
