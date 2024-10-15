@@ -4,7 +4,7 @@
 #include <iomanip>
 
 int main() {
-  //setlocale(LC_ALL, "Russian");
+  setlocale(LC_ALL, "Russian");
 
   int n = 8;
 
@@ -90,6 +90,12 @@ int main() {
     std::cout << std::setprecision(5) << x[i] << ' ';
   }
   std::cout << "}" << std::endl;
+  std::cout << "||x - x*|| = ";
+  double c = 0;
+  for (int i = 0; i < 8; i++) {
+    c += (x[i] - i - 1) * (x[i] - i - 1);
+  }
+  std::cout << std::pow(c, 0.5) << std::endl;
   std::cout << "LU-разложение: " << count_lu_add << " сложений " << count_lu_mul << " умножений " << count_lu_div << " делений Всего: " << count_lu_mul + count_lu_div + count_lu_add << std::endl;
   std::cout << "Прямой ход: " << count_f_add << " сложений " << count_f_mul << " умножений " << count_f_div << " делений Всего: " << count_f_mul + count_f_div + count_f_add << std::endl;
   std::cout << "Обратный ход: " << count_b_add << " сложений " << count_b_mul << " умножений " << count_b_div << " делений Всего: " << count_b_mul + count_b_div + count_b_add << std::endl;
