@@ -9,7 +9,7 @@ int main() {
   for (int i = 0; i < n; i++) {
     std::cin >> v[i];
   }
-  std::bitset<21> b;
+  std::bitset<1001> b;
   int ans = 1e9;
   for (int i = 0; i < (1 << (n-1)); i++) {
     b = i;
