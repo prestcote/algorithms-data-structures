@@ -1,27 +1,25 @@
 #include <iostream>
-#include <cstdint>
 #include <vector>
-#include <algorithm>
-
-
+#include <bitset>
+#include <cmath>
 int main() {
-  int n = 0;
-  int s = 0;
+  int64_t n = 0;
+  int64_t s = 0;
   std::cin >> s >> n;
-  std::vector<int> weight(s+1);
+  int64_t w = 0;
+  std::bitset<10001> b = 1;
   for (int i = 0; i < n; i++) {
-    std::cin >> weight[i];
+    std::cin >> w;
+    b = b | (b << w);
   }
-  std::vector<int> dp(s + 1);
-  dp[0] = 1;
-  for (int i = 1; i <= s; i++) {
-    for (int j = 0; j < n; j++) {
-      if (i - weight[j] > 0) {
-        dp[i] = dp[i - weight[j]];
-      }
+  int pos = 0;
+  //std::cout << b << std::endl;
+  for (int i = s; i >= 0; i--) {
+    //std::cout << b[i] << '\n';
+    if (b[i] == 1) {
+      pos = i;
+      break;
     }
-    dp[i] += 1;
   }
-  std::cout << dp[s];
-
+  std::cout << pos;
 }
