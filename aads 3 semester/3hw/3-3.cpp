@@ -4,43 +4,34 @@
 #include <iomanip>
 #include <cmath>
 
+double PI = 3.1415926535; 
 
-double f(double x) {
-  return 6 * x * x * x * x + 7 * x * x * x - 8 * x * x - 9 * x + 1;
+double f(double x) { //выбранная функция
+  return std::sin(x);
 }
 
-double polinom(double Xi, std::vector<double> x, std::vector<double>y) {
-  double def = 0;
-  for (int i = 0; i < 8; i++) {
-    double p = 1;
-    for (int j = 0; j < 8; j++) {
-      if (i != j) {
-        p *= (Xi - x[j]) / (x[i] - x[j]);
-      }
-    }
-    def += p*y[i];
-  }
-  return def;
+double g(double b) { //интеграл от функции на отрезке [0, b]
+  return -(std::cos(b) - 1);
+}
+
+double boole_method(double h) { //формула буля
+  double x0 = 0;
+  double x1 = x0 + h;
+  double x2 = x0 + 2*h;
+  double x3 = x0 + 3*h;
+  double x4 = x0 + 4*h;
+  return (2 * h * (7 * f(x0) + 32 * f(x1) + 12 * f(x2) + 32 * f(x3) + 7 * f(x4))) / 45 - ((-f(PI / 3)) * 8 * std::pow(h, 7)) / 945;
 }
 
 int main() {
   setlocale(LC_ALL, "Russian");
-
-  std::vector<double> x = { -2.046, -2, -1.17084, -0.43703, 0.10266, 0.73287, 1.941, 2 };
-  std::vector<double>y(8);
-  
-  for (int i = 0; i < 8; i++) {
-    y[i] = f(x[i]);
+  std::cout << std::setprecision(10);
+  for (double x = 4; x < 12; x += 2) {
+    double h = PI / x;
+    double I = g(4 * h);
+    double I_tilda = boole_method(h);
+    std::cout << "[a, b] = [" << 0 << ", 4PI/" << x << "] h = PI / " << x << " I = " << I << " I~= " << I_tilda << " | I - I~| = " << I - I_tilda <<std::endl;
   }
-
-  double x1 = -1.487;
-  double x2 = 1.047;
-  double x3 = 1.2215;
-
-  std::cout << std::setprecision(20);
-  std::cout << "\nx1 = " << x1 << " f(x1) = " << f(x1) << " g(x1) = " << polinom(x1, x, y) << "|f(x1) - g(x1) = " << f(x1) - polinom(x1, x, y) << '\n';
-  std::cout << "x2 = " << x2 << " f(x2) = " << f(x2) << " g(x2) = " << polinom(x2, x, y) << "|f(x2) - g(x2) = " << f(x2) - polinom(x2, x, y) << '\n';
-  std::cout << "x3 = " << x3 << " f(x3) = " << f(x3) << " g(x3) = " << polinom(x3, x, y) << "|f(x3) - g(x3) = " << f(x3) - polinom(x3, x, y) << '\n';
 
   return 0;
 }
