@@ -22,7 +22,7 @@ int main() {
     std::cin >> el;
   }
   int mx = 0;
-  double t = 100000;
+  double t = 10000000000000;
   int cnt = 0;
   int cur_weight = 0;
   while (t > 0.0001) {
