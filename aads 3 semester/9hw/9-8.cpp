@@ -35,6 +35,7 @@ int main() {
       ans += 1;
     }
   }
+
   std::vector<long long> answer(k);
   answer[ord[0].second] = ans;
   long long prev_l = ord[0].first.first;
