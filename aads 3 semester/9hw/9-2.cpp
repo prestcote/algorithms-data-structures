@@ -6,44 +6,52 @@ struct FOO {
   long long size = 320;
   std::vector<long long> v;
   std::vector<long long> b;
+  std::vector<long long> add;
 
   FOO(const std::vector<long long>& arr) {
     v = arr;
-    b = std::vector<long long>(arr.size() / size + 2, -10000000000);
+    b = std::vector<long long>(arr.size() / size + 2, -1e10);
+    add = std::vector<long long>(b.size(), 0);
     for (long long i = 0; i < arr.size(); i++) {
       b[i / size] = std::max(b[i / size], arr[i]);
     }
   }
 
   void set(long long left, long long right, long long num) {
-    for (long long i = left; i <= right; i++) {
-      v[i] += num;
-    }
-    long long max = -100000000000;
-    long long end = 0;
-    if (right / size * size + size > v.size()) {
-      end = v.size();
-    }
-    else {
-      end = (right / size + 1) * size;
-    }
-    for (long long i = (left / size) * size; i < end; i++) {
-      max = std::max(max, v[i]);
-      if ((i + 1) % size == 0 || i == v.size() - 1) {
-        b[i / size] = max;
-        max = -100000000000;
+    long long int max = -1e100;
+    for (int i = left / size * size; i < std::min((long long)v.size(), left / size * size + size); ++i) {
+      if (i >= left && i <= right) {
+        v[i] += num;
       }
+      max = std::max(max, v[i]);
+    }
+    b[left / size] = max;
+
+    for (int i = std::min((long long)v.size(), left / size * size + size); i <= right / size * size - size; i += size) {
+      add[i / size] += num;
+    }
+
+    max = -1e100;
+    if (left / size != right / size) {
+      for (int i = right / size * size; i < std::min((long long)v.size(), right / size * size + size); ++i) {
+        if (i >= left && i <= right) {
+          v[i] += num;
+        }
+        max = std::max(max, v[i]);
+      }
+      b[right / size] = max;
     }
   }
+
   long long max(long long left, long long right) {
-    long long max = -100000000000;
+    long long max = -1e100;
     while (left <= right) {
       if (left % size == 0 && left / size != right / size) {
-        max = std::max(max, b[left / size]);
+        max = std::max(max, b[left / size] + add[left / size]);
         left += size;
       }
       else {
-        max = std::max(v[left], max);
+        max = std::max(v[left] + add[left / size], max);
         ++left;
       }
     }
@@ -75,6 +83,7 @@ int main() {
       std::cin >> one >> two;
       std::cout << f.max(one - 1, two - 1) << '\n';
     }
+
   }
   return 0;
 }
