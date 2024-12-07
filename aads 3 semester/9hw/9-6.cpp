@@ -1,44 +1,73 @@
 #include <iostream>
 #include <vector>
 
-//поиск суммы
+long long size = 100000;
 
 struct FOO {
-  long long size = 320;
-  std::vector<long long>v;
+  //long long size = 100000;
+  std::vector <std::vector<long long>> v;
   std::vector<long long>b;
-  FOO(std::vector <long long> arr) {
-    v = arr;
+  FOO(long long n) {
+    v = std::vector <std::vector<long long>>(100000, std::vector<long long> (100000, 0));
     b = std::vector<long long>(v.size() / size + 2, 0);
+    long long el = 0;
+    for (int i = 0; i < n; i++) {
+      std::cin >> el;
+      bool f = true;
+      if (v[el / size][el % size] != 0) {
+        b[i / size] += el;
+        v[el / size][el % size] = 1;
+      }
+    }
+    std::cout << '\n';
+    for (int i = 0; i < 1; i++) {
+      std::cout << v[0][i] << ' ';
+    }
   }
   long long sum(long long left, long long right) {
+
     long long sum = 0;
-    while (left <= right) {
-      if (left % size == 0 && left / size != right / size) {
-        sum += b[left / size];
-        left += size;
+    int nom = left / size;
+    for (long long i = left % size; i < v[nom].size(); i++) {
+      if (v[nom][i] == 1) {
+        sum += nom * size + i;
       }
-      else {
-        sum += v[left];
-        ++left;
+    }
+    if (right / size != nom) {
+      nom = right / size;
+      for (long long i = 0; i < right / size; i++) {
+        if (v[nom][i] == 1) {
+          sum += nom * size + i;
+        }
       }
+      for (int i = left / size + 1; i < nom; ++i)
+        sum += b[i];
     }
     return sum;
   }
 
   void set(long long num) {
-    v[num] = num;
-    b[num / size] += num;
+    long long index = num / size;
+    if (v[num / size][num % size] != 1) {
+      b[num / size] += num;
+      v[num / size][num % size] = 1;
+    }
   }
 
 
 };
 
 int main() {
+  std::ios_base::sync_with_stdio(0);
+  std::cin.tie(0);
+  std::cout.tie(0);
+
   long long n = 0;
   std::cin >> n;
-  std::vector<long long> v(5, 0);
-  FOO f(v);
+  long long el = 0;
+  long long index = 0;
+  
+  FOO f(n);
   std::string command;
   long long mem = 0;
   bool flag = false;
@@ -60,9 +89,6 @@ int main() {
       }
       else {
         a = l + mem;
-      }
-      if (a > v.size()) {
-        v.resize(a + 1);
       }
       f.set(a);
       flag = false;
