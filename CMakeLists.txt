@@ -12,3 +12,4 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_CURRENT_SOURCE_DIR}bin
 
 add_subdirectory(yandex_trainings)
 add_subdirectory("aads 3 semester")
+add_subdirectory("aads 4 semester")
