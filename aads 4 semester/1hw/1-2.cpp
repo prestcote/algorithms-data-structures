@@ -93,26 +93,16 @@ public:
 int main() {
 
   long long n = 0;
-  std::cin >> n;
-  long long* arr = new long long[n];
-  for (size_t i = 0; i < n; ++i) {
-    std::cin >> arr[i];
+  //std::cin >> n;
+  long long* arr = new long long[100001];
+  for (size_t i = 0; i < 100001; ++i) {
+    //std::cin >> arr[i];
+    arr[i] = (i * i) % 12345 + (i * i * i) % 23456;
   }
-  SegmentTree<long long> st(arr, n);
-  long long a = 0;
-  std::cin >> a;
-  char c;
-  long long left = 0;
-  long long right = 0;
-  for (int i = 0; i < a; i++) {
-    std::cin >> c >> left >> right;
-    if (c == 's') {
-      std::cout << st.get(left - 1, right) << ' ';
-    }
-    else {
-      st.set(left - 1, right);
-    }
-  }
+  SegmentTree<long long> st(arr, 100001);
+  st.get(1, 2);
+  
+  //st.print();
   return 0;
 
 }
