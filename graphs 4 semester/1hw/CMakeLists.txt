@@ -1,0 +1,5 @@
+add_executable(g1-1 1-1.cpp)
+add_executable(g1-2 1-2.cpp)
+add_executable(g1-3 1-3.cpp)
+add_executable(g1-4 1-4.cpp)
+add_executable(g1-5 1-5.cpp)

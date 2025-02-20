@@ -51,6 +51,10 @@ public:
   }
 
   T get(size_t left, size_t right) {
-
+    return 0;
   }
 };
+
+int main() {
+
+}
