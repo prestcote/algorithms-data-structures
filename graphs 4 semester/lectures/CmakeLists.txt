@@ -1,2 +1,6 @@
 add_executable(g01-1 g01-1.cpp)
 add_executable(g01-2 g01-2.cpp)
+add_executable(g03-1 g03-1.cpp)
+add_executable(g03-2 g03-2.cpp)
+add_executable(g03-3 g03-3.cpp)
+add_executable(g03-4 g03-4.cpp)
