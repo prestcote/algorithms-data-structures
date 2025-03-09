@@ -1,0 +1,1 @@
+#add_executable(42-1 2-1.cpp)

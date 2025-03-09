@@ -1,0 +1,8 @@
+add_executable(g3-a a.cpp)
+add_executable(g3-c c.cpp)
+add_executable(g3-d d.cpp)
+add_executable(g3-f f.cpp)
+add_executable(g3-b b.cpp)
+add_executable(g3-h h.cpp)
+add_executable(g3-g g.cpp)
+add_executable(g3-e e.cpp)
