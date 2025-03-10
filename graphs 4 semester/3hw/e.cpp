@@ -8,47 +8,54 @@ using matrix = std::vector<std::vector<std::vector<int>>>;
 
 int n = 0;
 int m = 0;
-int ans = 1e9;
+int ans;
 std::pair<int, int> s;
 std::pair<int, int> f;
 matrix used;
+std::vector<std::vector<int>> g;
 
-struct cur {
-  int x;
-  int y;
-  int dir;
-  int count;
-};
+//std::vector<int> cur(4, 0);
 
-void bfs(matrix& used, std::vector<std::vector<int>>& g, int direction) {
-  std::queue<cur> q;
-  q.push({ s.first, s.second, direction, 0 });
-  //q.push({ s.first, s.second, 1, 0 });
-  //q.push({ s.first, s.second, 2, 0 });
-  //q.push({ s.first, s.second, 3, 0 });
+void bfs() {
+  //std::cout << "were in";
+  std::queue<std::vector<int>> q;
+  q.push({ s.first, s.second, 0, 0});
+  q.push({ s.first, s.second, 1, 0});
+  q.push({ s.first, s.second, 2, 0});
+  q.push({ s.first, s.second, 3, 0});
+  //std::cout << "err cntrl 1 ";
+
+  //used[s.first][s.second][0] = 1;
+  //used[s.first][s.second][1] = 1;
+  //used[s.first][s.second][2] = 1;
+  //used[s.first][s.second][3] = 1;
 
   while (!q.empty()) {
-    cur v = q.front();
+    std::vector<int> v = q.front();
     q.pop();
-    if (v.x == f.first && v.y == f.second) {
-      ans = std::min(v.count, ans);
+    if (v[0] == f.first && v[1] == f.second) {
+      //std::cout << "ALERT";
+      std::cout << static_cast<int>(v[3]) << '\n';
+      ans = v[3];
       return;
     }
-    std::vector<std::pair<int,  int>> moves = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
-    int vx1 = v.x + moves[v.dir].first;
-    int vy1 = v.y + moves[v.dir].second;
-    if (g[vx1][vy1] == 0) {
-      cur v1{ vx1, vy1, v.dir, v.count };
-      v.count += 1;
-      q.push({ vx1, vy1, v.dir, v.count });
-    }
-    int right = (v.dir + 1) % 4;
-    int vx2 = v.x + moves[right].first;
-    int vy2 = v.y + moves[right].second;
-    if (g[vx1][vy1] == 0) {
-      cur v2{ vx1, vy1, v.dir, v.count };
-      v.count += 1;
-      q.push({ vx1, vy1, v.dir, v.count });
+
+    std::vector<std::pair<int, int>> moves = { {-1, 0}, {0, -1}, {1, 0}, {0, 1} };
+    int vx1 = v[1] + moves[v[2]].first;
+    int vy1 = v[0] + moves[v[2]].second;
+
+    if (!used[v[0]][v[1]][v[2]]) {
+      used[v[0]][v[1]][v[2]] = 1;
+
+      if (!g[vy1][vx1]) {
+        q.push({vy1, vx1, v[2], v[3] + 1});
+      }
+      int right = (v[2] + 1) % 4;
+      int vx2 = v[1] + moves[right].first;
+      int vy2 = v[0] + moves[right].second;
+      if (!g[vy2][vx2]) {
+        q.push({ vy2, vx2, right, v[3] + 1});
+      }
     }
   }
 }
@@ -60,7 +67,7 @@ int main() {
   //std::cout << "minus one";
   std::cin >> c;
   //std::cout << "zero";
-  std::vector<std::vector<int>> g(n, std::vector<int>(m, 0));
+  g = std::vector<std::vector<int>> (n, std::vector<int>(m, 0));
   used = matrix(n, std::vector<std::vector<int>>(m, std::vector<int>(4, 0)));
   std::string str;
   //std::cout << "one";
@@ -79,12 +86,12 @@ int main() {
       }
     }
   }
-  std::cout << "start";
-  bfs(used, g, 0);
-  bfs(used, g, 1);
-  bfs(used, g, 2);
-  bfs(used, g, 3);
-  std::cout << ans;
+  //std::cout << "start";
+  bfs();
+  //bfs(used, g, 1);
+  //bfs(used, g, 2);
+  //bfs(used, g, 3);
+  //std::cout << ans;
 
   return 0;
   
