@@ -7,6 +7,7 @@ struct SegmentTree {
   struct Node {
     F func_;
     T value_ = def;
+    T mod_inc = 0;
     Node* left_ = nullptr;
     Node* right_ = nullptr;
     int begin_ = 0;
@@ -31,7 +32,7 @@ struct SegmentTree {
 
 template<typename T, T def, typename F>
 SegmentTree<T, def, F>::Node::Node(int begin, int end, F func) :
-  begin_(begin), end_(end), func_(func) {
+  begin_(begin), end_(end), func_(func) { // HERE !!!!!!!!!!!!!!!
 }
 
 template<typename T, T def, typename F>
@@ -66,10 +67,10 @@ void SegmentTree<T, def, F>::Set(int index, T value) {
 }
 
 template<typename T, T def, typename F>
-void SegmentTree<T, def, F>::Node::Set(int index, T value) {
+void SegmentTree<T, def, F>::Node::Set(int left, int right, T value) { // HERE !!!!!!!!!!!1
   if (left_ == nullptr) Build(this);
-  if (begin_ + 1 == end_) {
-    value_ = value;
+  if (begin_ + 1 == end_ || (left <= begin && right >= end) {
+    mod_inc += value;
     return;
   }
   if (index < left_->end_) {
@@ -83,23 +84,23 @@ void SegmentTree<T, def, F>::Node::Set(int index, T value) {
 
 template<typename T, T def, typename F>
 T SegmentTree<T, def, F>::Get(int qbegin, int qend) {
-  return root_->Get(qbegin, qend);
+  root_->Get(qbegin, qend);
 }
 
 template<typename T, T def, typename F>
 T SegmentTree<T, def, F>::Node::Get(int qbegin, int qend) {
   if (left_ == nullptr) Build(this);
   if (qbegin <= begin_ && end_ <= qend) {
-    return value_;
+    return value_ + mod_inc;
   }
   if (qend <= begin_ || end_ <= qbegin) {
     return def;
   }
-  return func_(left_->Get(qbegin, qend), right_->Get(qbegin, qend));
+  return func_(left_->Get(qbegin, qend), right_->Get(qbegin, qend)) + mod_inc;
 }
 
 int summ(int a, int b) {
-  return a + b;
+  return std::max(a, b);
 }
 
 int main() {

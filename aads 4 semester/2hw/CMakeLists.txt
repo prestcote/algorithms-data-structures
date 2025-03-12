@@ -1,1 +1,6 @@
-#add_executable(42-1 2-1.cpp)
+add_executable(42-1 2-1.cpp)
+add_executable(42-3 2-3.cpp)
+add_executable(42-5 2-5.cpp)
+add_executable(42-4 2-4.cpp)
+#add_executable(42-51 2-51.cpp)
+#add_executable(42-6 2-6.cpp)

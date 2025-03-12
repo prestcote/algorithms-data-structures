@@ -4,11 +4,11 @@
 template <typename T>
 class SegmentTree {
 private:
-  //T* arr_;
+  T* arr_;
   T* tree_;
   size_t size = 0;
   T* mod_;
-  /*
+
   void build(size_t v, size_t left, size_t right) {
     if (left == right) {
       tree_[v] = arr_[left];
@@ -18,11 +18,11 @@ private:
       size_t mid = (left + right) / 2;
       build(v * 2 + 1, left, mid);
       build(v * 2 + 2, mid + 1, right);
-      tree_[v] = std::max(tree_[v * 2 + 1], tree_[v * 2 + 2]);
+      tree_[v] = std::max(tree_[v * 2+1], tree_[v * 2 + 2]);
       mod_[v] = 0;
     }
   }
-  */
+
 
   void push(size_t v, size_t left, size_t right) {
     if (mod_[v] != 0) {
@@ -41,7 +41,7 @@ private:
       return tree_[v];
     }
     else if (qright < left || right < qleft) {
-      return 0;
+      return -1;
     }
     else {
       //push(v, left, right);
@@ -56,7 +56,7 @@ private:
       mod_[v] += value;
       push(v, left, right);
       return;
-
+      
     }
     if (qright < left || right < qleft) {
       return;
@@ -69,25 +69,24 @@ private:
   }
 
 public:
-  SegmentTree(size_t n) {
+  SegmentTree(size_t n, const T* arr) {
     size = n;
     //std::cout << size << "\n\n";
-    //arr_ = new T[size];
+    arr_ = new T[size];
     mod_ = new T[4 * size];
     tree_ = new T[4 * size];
-    /*
     for (size_t i = 0; i < size; i++) {
       arr_[i] = arr[i];
-    }*/
+    }
     for (size_t i = 0; i < 4 * size; i++) {
       mod_[i] = 0;
-      tree_[i] = 0;
+      tree_[i] = -1;
     }
-    //build(0, 0, n - 1);
+    build(0, 0, n - 1);
   }
 
   ~SegmentTree() {
-    //delete[] arr_;
+    delete[] arr_;
     delete[] tree_;
     delete[] mod_;
   }
@@ -111,25 +110,28 @@ public:
 int main() {
   size_t n = 0;
   long long m = 0;
-  long long k = 0;
-  std::cin >> n >> k >> m;
+  std::cin >> n;
   long long* arr = new long long[n];
+  for (long long i = 0; i < n; i++) {
+    std::cin >> arr[i];
+  }
+  //std::cout << '\n';
+  //std::cout << '\n';
+  std::cin >> m;
+  SegmentTree<long long> st(n, arr);
+  char c;
+  long long l = 0;
+  long long r = 0;
   long long x = 0;
-  long long y = 0;
-  SegmentTree<long long>st(n);
   for (long long i = 0; i < m; i++) {
-    std::cin >> x >> y;
-    long long s = st.get(x, y-1);
-    if (s < k) {
-      st.set(x, y-1, 1);
-      //std::cout << '\n';
-      //st.print();
-      //std::cout << '\n';
-      std::cout << 1 << '\n'; // << ' ' << s << '\n';
+    std::cin >> c;
+    if (c == 'a') {
+      std::cin >> l >> r >> x;
+      st.set(l-1, r-1, x);
     }
     else {
-      std::cout << 0 << '\n';
+      std::cin >> l >> r;
+      std::cout << st.get(l-1, r-1) << '\n';
     }
   }
-
 }
