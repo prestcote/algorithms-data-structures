@@ -1,0 +1,7 @@
+add_executable(g4-b b.cpp)
+add_executable(g4-a a.cpp)
+add_executable(g4-c c.cpp)
+add_executable(g4-e e.cpp)
+add_executable(g4-d d.cpp)
+add_executable(g4-f f.cpp)
+add_executable(g4-g g.cpp)

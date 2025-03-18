@@ -1,0 +1,8 @@
+add_executable(434-a a.cpp)
+add_executable(434-b b.cpp)
+add_executable(434-c c.cpp)
+add_executable(434-d d.cpp)
+add_executable(434-e e.cpp)
+add_executable(434-f f.cpp)
+add_executable(434-g g.cpp)
+add_executable(434-h h.cpp)
