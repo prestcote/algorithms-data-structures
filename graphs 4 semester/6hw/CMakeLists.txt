@@ -1,0 +1,6 @@
+add_executable(g6-c c.cpp)
+add_executable(g6-a a.cpp)
+add_executable(g6-b b.cpp)
+add_executable(g6-d d.cpp)
+add_executable(g6-e e.cpp)
+add_executable(g6-f f.cpp)
