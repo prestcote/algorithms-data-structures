@@ -1,0 +1,5 @@
+add_executable(46-a a.cpp)
+add_executable(46-b b.cpp)
+add_executable(46-c c.cpp)
+add_executable(46-d d.cpp)
+add_executable(46-e e.cpp)
