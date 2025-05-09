@@ -43,6 +43,7 @@ std::vector<Point> convex(std::vector<Point> points) {
   std::sort(points.begin(), points.end());
   points.erase(std::unique(points.begin(), points.end()), points.end());
   std::vector<Point> vec;
+
   for (int i = 0; i < points.size(); i++) {
     while (vec.size() >= 2 && cross(vec[vec.size() - 2], vec[vec.size() - 1], points[i]) <= 0)
       vec.pop_back();
